@@ -4,5 +4,6 @@ export interface Chore {
   frequency: number;
   description: string;
   frequency_description: string;
-  last_completed: number;
+  last_completed: Date;
+  due_date: Date;
 }
