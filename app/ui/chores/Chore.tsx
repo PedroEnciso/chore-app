@@ -49,19 +49,21 @@ function Chore({ chore }: { chore: TChore }) {
       >
         {chore.name}
       </p>
-      <div className="flex items-center gap-6">
-        <p>{get_dirtiness_status(get_days_lapsed(chore.due_date))}</p>
-        {is_due(chore.due_date) ? (
-          <p className="text-sm font-medium leading-none">
-            Dirty for {get_days_lapsed(chore.due_date)} days
-          </p>
-        ) : (
-          <p className="text-sm font-medium leading-none">
-            Clean until {format_date(chore.due_date)}
-          </p>
-        )}
+      <div className="pl-6">
+        <div className="flex items-center gap-3">
+          <p>{get_dirtiness_status(get_days_lapsed(chore.due_date))} </p>
+          {is_due(chore.due_date) ? (
+            <p className="text-sm font-medium leading-none">
+              Dirty for {get_days_lapsed(chore.due_date)} days
+            </p>
+          ) : (
+            <p className="text-sm font-medium leading-none">
+              until {format_date(chore.due_date)}
+            </p>
+          )}
+        </div>
+        <p>Frequency: {chore.frequency_description}</p>
       </div>
-      <p>{chore.frequency_description}</p>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-[425px]">
