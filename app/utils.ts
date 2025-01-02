@@ -9,9 +9,23 @@ export function is_due(date: Date): boolean {
   return false;
 }
 
-// format date into a string i.e. Nov 10
+// format date into a string i.e. Nov 10 of weekday if within a week
 export function format_date(date: Date): string {
-  return date.toLocaleString("default", { day: "numeric", month: "short" });
+  const lapsed = Math.abs(get_days_lapsed(date));
+  if (lapsed > 7) {
+    return date.toLocaleString("default", { day: "numeric", month: "short" });
+  } else {
+    const daysOfWeek = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    return daysOfWeek[date.getDay()];
+  }
 }
 
 // returns the days that have passed since the date received
