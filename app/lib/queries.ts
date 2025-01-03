@@ -43,6 +43,35 @@ export async function updateChoreCompletedDate(
   }
 }
 
+export async function createNewChore({
+  name,
+  description,
+  frequency,
+  frequency_description,
+  last_completed,
+  due_date,
+}: {
+  name: string;
+  description: string;
+  frequency: number;
+  frequency_description: string;
+  last_completed: Date;
+  due_date: Date;
+}) {
+  try {
+    const data = await sql<Chore>`
+    INSERT INTO chores
+    (name, frequency, description, frequency_description, last_completed, due_date)
+    VALUES
+    (${name}, ${frequency}, ${description}, ${frequency_description}, ${last_completed.toISOString()}, ${due_date.toISOString()})
+    `;
+    return data.rows;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to create a new chore.");
+  }
+}
+
 function addDaysToDate(date: Date, days: number): Date {
   const result = new Date(date);
   result.setDate(result.getDate() + days);
