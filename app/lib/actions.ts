@@ -1,6 +1,6 @@
 "use server";
 
-import { updateChoreCompletedDate } from "./queries";
+import { createNewChore, updateChoreCompletedDate } from "./queries";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -10,7 +10,10 @@ export async function update_chore_completed_date(
     success: boolean;
   },
   formData: FormData
-) {
+): Promise<{
+  message: string;
+  success: boolean;
+}> {
   const date = new Date();
 
   const schema = z.object({
@@ -40,5 +43,100 @@ export async function update_chore_completed_date(
   } catch (error) {
     console.log("There was an error:", error);
     return { message: `Failed to updated chore.`, success: false };
+  }
+}
+
+export async function create_new_chore({
+  name,
+  description,
+  frequency,
+  last_completed,
+}: {
+  name: string;
+  description: string;
+  frequency: string;
+  last_completed?: Date;
+}): Promise<{
+  message: string;
+}> {
+  const frequency_number = parseInt(frequency);
+
+  const formSchema = z.object({
+    name: z.string().min(2).max(100),
+    description: z.string().min(2).max(250),
+    frequency: z.number().min(1).max(60),
+    last_completed: z.date().optional(),
+  });
+
+  try {
+    // validate the input
+    const parse = formSchema.safeParse({
+      name,
+      description,
+      frequency: frequency_number,
+      last_completed,
+    });
+
+    if (!parse.success) {
+      return { message: "Failed to create chore." };
+    }
+    // define all variables
+    const validated_name = parse.data.name;
+    const validated_description = parse.data.description;
+    const validated_frequency = parse.data.frequency;
+    let validated_last_completed = parse.data.last_completed;
+    // check for last_completed
+    if (!validated_last_completed) {
+      // last_completed not inputed by user, assume the chore is due today
+      validated_last_completed = getDateNDaysBefore(validated_frequency + 1);
+    }
+    // determine frequency_description and due_date
+    const frequency_description = getFrequencyDescription(validated_frequency);
+    const due_date = getDateNDaysAfter(
+      validated_last_completed,
+      validated_frequency
+    );
+    // create a new chore using the query
+    await createNewChore({
+      name: validated_name,
+      description: validated_description,
+      frequency: validated_frequency,
+      last_completed: validated_last_completed,
+      frequency_description,
+      due_date,
+    });
+
+    return { message: "" };
+  } catch (error) {
+    if (error instanceof Error) {
+      return { message: error.message };
+    } else {
+      return { message: "There was an error creating this chore." };
+    }
+  }
+}
+
+// returns the date that was n number of days ago
+function getDateNDaysBefore(n: number) {
+  const today = new Date();
+  today.setDate(today.getDate() - n);
+  return today;
+}
+
+function getDateNDaysAfter(date: Date, n: number) {
+  date.setDate(date.getDate() + n);
+  return date;
+}
+
+function getFrequencyDescription(frequency: number) {
+  switch (true) {
+    case frequency <= 13:
+      return "Once a week";
+    case frequency > 13 && frequency <= 29:
+      return "Every other week";
+    case frequency > 29 && frequency <= 59:
+      return "Once a month";
+    default:
+      return "Every other month";
   }
 }
