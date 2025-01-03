@@ -7,7 +7,7 @@ export default async function ChoreList() {
 
   return (
     <>
-      <ul className="mt-8 flex flex-col gap-6">
+      <ul className="flex flex-col gap-6">
         {chores.map((chore) => (
           <Chore key={chore.id} chore={chore} />
         ))}
