@@ -200,7 +200,11 @@ function ChoreForm() {
             </FormItem>
           )}
         ></FormField>
-        <Button type="submit" variant="secondary" disabled={isSubmitting}>
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full md:w-fit"
+        >
           Submit
         </Button>
         {errorMessage ? <p className="text-red-500">{errorMessage}</p> : null}
