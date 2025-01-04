@@ -26,11 +26,13 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    /* --background: 0 0% 100%; */
+    --background: 46 68% 94%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
+    /* --popover: 0 0% 100%; */
+    --popover: 46 68% 94%;
     --popover-foreground: 0 0% 3.9%;
     --primary: 0 0% 9%;
     --primary-foreground: 0 0% 98%;
@@ -51,9 +53,13 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    /* Pedro's variables */
+    --clean: 217 57% 82%;
+    --dirty: 0 57% 82%;
   }
   .dark {
-    --background: 0 0% 3.9%;
+    /* --background: 0 0% 3.9%; */
+    --background: 203 86% 8%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;
