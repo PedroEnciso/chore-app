@@ -19,12 +19,14 @@ export async function update_chore_completed_date(
   const schema = z.object({
     id: z.number().min(1),
     frequency: z.number().min(1),
+    member_id: z.number(),
   });
 
   try {
     const id = formData.get("id") as string;
     const frequency = formData.get("frequency") as string;
     const name = formData.get("name");
+    const member_id = formData.get("member_id") as string;
 
     if (!id || !frequency) {
       throw new Error("Either id or frequency is not the correct type.");
@@ -33,12 +35,17 @@ export async function update_chore_completed_date(
     const data = schema.parse({
       id: parseInt(id),
       frequency: parseInt(frequency),
+      member_id: parseInt(member_id),
     });
 
-    await updateChoreCompletedDate(data.id, date, data.frequency);
+    await updateChoreCompletedDate(
+      data.id,
+      date,
+      data.frequency,
+      data.member_id
+    );
 
     revalidatePath("/chores");
-    console.log("updated chore");
     return { message: `Updated chore ${name}.`, success: true };
   } catch (error) {
     console.log("There was an error:", error);
