@@ -94,6 +94,16 @@ export async function fetchMembers() {
   }
 }
 
+export async function insertActivity(member_id: number, chore_id: number) {
+  try {
+    await sql`
+      INSERT INTO activity (chore_id, member_id) VALUES (${chore_id}, ${member_id})
+    `;
+  } catch (error) {
+    throw new Error(`Failed to document activity.`);
+  }
+}
+
 function addDaysToDate(date: Date, days: number): Date {
   const result = new Date(date);
   result.setDate(result.getDate() + days);
