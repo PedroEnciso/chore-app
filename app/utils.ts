@@ -1,7 +1,7 @@
 // checks if a provided date is "earlier" than right now
 export function is_due(date: Date): boolean {
   const now = new Date();
-  if (date.getTime() < now.getTime()) {
+  if (new Date(date).getTime() < now.getTime()) {
     // provided date is "earlier" than now
     return true;
   }
