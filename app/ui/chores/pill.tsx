@@ -17,7 +17,6 @@ const pillVariants = cva("py-1 px-4 rounded w-fit", {
 });
 
 function Pill({ children, variant }: PillProps) {
-  console.log(variant);
   return (
     <div className={cn(pillVariants({ variant }))}>
       <p className="font-medium">{children}</p>
