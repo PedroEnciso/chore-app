@@ -115,15 +115,6 @@ export const chores = [
     due_date: "2024-11-23T00:58:47.643Z",
   },
   {
-    id: 13,
-    name: "",
-    frequency: 14,
-    description: "",
-    frequency_description: "Every other week",
-    last_completed: "2024-11-13T00:57:14.214Z",
-    due_date: "2024-11-23T00:58:47.643Z",
-  },
-  {
     id: 14,
     name: "Curtains",
     frequency: 30,
