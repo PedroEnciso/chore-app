@@ -1,6 +1,10 @@
 "use server";
 
-import { createNewChore, updateChoreCompletedDate } from "./queries";
+import {
+  createNewChore,
+  insertActivity,
+  updateChoreCompletedDate,
+} from "./queries";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -37,13 +41,16 @@ export async function update_chore_completed_date(
       frequency: parseInt(frequency),
       member_id: parseInt(member_id),
     });
-
+    // update the completed date of the chore
     await updateChoreCompletedDate(
       data.id,
       date,
       data.frequency,
       data.member_id
     );
+
+    // add member id and chore id to activity table
+    await insertActivity(data.member_id, data.id);
 
     revalidatePath("/chores");
     return { message: `Updated chore ${name}.`, success: true };
