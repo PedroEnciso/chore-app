@@ -7,9 +7,9 @@ export default async function Home() {
   return (
     <>
       <header className="mt-10 w-11/12 mx-auto flex flex-col gap-3">
-        <TypographyH1>Enciso Chores</TypographyH1>
+        <TypographyH1>House Chores</TypographyH1>
         <Link href="/chores/create">
-          <Button variant="outline" size="sm" className="w-full md:w-fit">
+          <Button variant="outline" size="sm" className="w-fit">
             Add a chore
           </Button>
         </Link>
