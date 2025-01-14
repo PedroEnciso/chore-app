@@ -8,9 +8,11 @@ export default async function ChoreList() {
   return (
     <>
       <ul className="flex flex-col gap-8">
-        {chores.map((chore) => (
-          <Chore key={chore.id} chore={chore} />
-        ))}
+        {chores.length > 0 ? (
+          chores.map((chore) => <Chore key={chore.id} chore={chore} />)
+        ) : (
+          <p>You have not added any chores yet!</p>
+        )}
       </ul>
     </>
   );
