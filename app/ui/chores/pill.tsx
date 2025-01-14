@@ -8,7 +8,7 @@ const pillVariants = cva("py-1 px-4 rounded w-fit", {
       Clean: "bg-clean",
       "Ready to clean": "bg-dirty",
       Dirty: "bg-red-600",
-      "Very dirty": "g-red-800",
+      "Very dirty": "bg-red-800",
     },
   },
   defaultVariants: {
