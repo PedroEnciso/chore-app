@@ -35,11 +35,6 @@ export async function DB() {
     due_date: Date;
   }) {
     try {
-      const db = await open({
-        filename: "./mydatabase.db",
-        driver: sqlite3.Database,
-      });
-
       await db.run(
         `
       INSERT INTO chores
@@ -60,11 +55,32 @@ export async function DB() {
     }
   }
 
-  function close() {
-    db.close();
+  async function updateChoreCompletedDate({
+    id,
+    date,
+    due_date,
+  }: {
+    id: number;
+    date: Date;
+    due_date: Date;
+  }) {
+    await db.run(
+      `
+        UPDATE chores
+        SET last_completed = ?, due_date = ?
+        WHERE id = ?
+      `,
+      date.toISOString(),
+      due_date.toISOString(),
+      id
+    );
   }
 
-  return { getChores, close, createNewChore };
+  async function close() {
+    await db.close();
+  }
+
+  return { getChores, close, createNewChore, updateChoreCompletedDate };
 }
 
 export async function openDb() {
