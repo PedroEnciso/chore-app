@@ -13,6 +13,7 @@ export function is_due(date: Date): boolean {
 export function format_date(date: Date): string {
   const lapsed = Math.abs(get_days_lapsed(date));
   if (lapsed > 7) {
+    date = new Date(date);
     return date.toLocaleString("default", { day: "numeric", month: "short" });
   } else {
     const daysOfWeek = [
@@ -24,7 +25,7 @@ export function format_date(date: Date): string {
       "Friday",
       "Saturday",
     ];
-    return daysOfWeek[date.getDay()];
+    return daysOfWeek[new Date(date).getDay()];
   }
 }
 
