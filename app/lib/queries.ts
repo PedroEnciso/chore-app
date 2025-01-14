@@ -4,29 +4,28 @@ import type { Chore } from "./types";
 export async function fetchChores(): Promise<Chore[]> {
   try {
     const db = await DB();
-    return db.getChores();
+    const chores = await db.getChores();
+    await db.close();
+    return chores;
   } catch (error) {
     throw new Error("Failed to fetch chores.");
   }
 }
 
-// export async function updateChoreCompletedDate(
-//   id: number,
-//   date: Date,
-//   frequency_in_days: number
-// ) {
-//   const new_due_date = addDaysToDate(date, frequency_in_days);
-//   try {
-//     const data = await sql<Chore>`
-//     UPDATE chores
-//     SET last_completed = ${date.toISOString()}, due_date = ${new_due_date.toISOString()}
-//     WHERE id = ${id};
-//     `;
-//     return data.rows;
-//   } catch (error) {
-//     throw new Error(`Failed to fetch chore with id ${id}.`);
-//   }
-// }
+export async function updateChoreCompletedDate(
+  id: number,
+  date: Date,
+  frequency_in_days: number
+) {
+  const new_due_date = addDaysToDate(date, frequency_in_days);
+  try {
+    const db = await DB();
+    db.updateChoreCompletedDate({ id, date, due_date: new_due_date });
+    await db.close();
+  } catch (error) {
+    throw new Error(`Failed to fetch chore with id ${id}.`);
+  }
+}
 
 export async function createNewChore({
   name,
@@ -53,6 +52,7 @@ export async function createNewChore({
       last_completed,
       due_date,
     });
+    await db.close();
   } catch (error) {
     console.error(error);
     throw new Error("Failed to create a new chore.");
